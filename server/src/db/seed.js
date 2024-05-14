@@ -1,5 +1,5 @@
-const { db } = require('./config.js')
-const { User } = require('../models')
+import {db} from './config.ts'
+import {User} from '../models'
 
 function randInt (a, b) {
     return a + Math.floor(Math.random() * (b - a))

@@ -1,26 +1,32 @@
-const { describe, it, expect, beforeAll, afterAll } = require('@jest/globals')
-const { User } = require('./index.ts')
-const db = require('../db/config')
+import { expect, test, describe, afterAll, beforeAll } from "bun:test";
+import {db} from "../db/config.ts";
+import { DataTypes } from "sequelize";
+import User from "./User.ts";
 
-// define in global scope
-let user
-
-// clear db and create new user before tests
 beforeAll(async () => {
-  await db.sync({ force: true })
-  user = await User.create({ username: 'gandalf' })
+  await db.sync();
 })
 
-// clear db after tests
-afterAll(async () => await db.sync({ force: true }))
+describe('User Model', () => {
+  test('Should have correct properties', async () => {
+    const attributes = User.getAttributes();
 
-describe('User', () => {
-  it('has an id', async () => {
-    expect(user).toHaveProperty('id')
-  })
+    expect(attributes).toHaveProperty('id');
+    expect(attributes.id).toEqual(expect.objectContaining({
+      autoIncrement: true,
+      primaryKey: true,
+      type: expect.objectContaining({
+        options: {},
+      }),
+    }));
 
-  /**
-   * Create more tests
-   * E.g. check that the username of the created user is actually gandalf
-   */
-})
+    expect(attributes).toHaveProperty('username');
+    expect(attributes.username).toEqual(expect.objectContaining({ // This was copied 
+      type: expect.objectContaining({
+        _length: 255,
+        options: expect.objectContaining({}),
+      }),
+      allowNull: false
+    }));
+  });
+});

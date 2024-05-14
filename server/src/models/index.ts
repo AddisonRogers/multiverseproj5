@@ -1,7 +1,19 @@
-const { User } = require('./User.js')
-// import the rest of your models above
+import {db} from '../db/config.ts'; 
+import user from "./User.ts"; 
+import card from "./Card.ts";  
+import deck from "./Deck.ts"; 
+import attack from "./Attack.ts";
 
-// set up the associations here
+user.hasOne(deck)
+deck.belongsTo(user)
 
-// and then export them all below
-module.exports = { User }
+deck.hasMany(card)
+card.belongsTo(deck)
+
+card.hasMany(attack)
+attack.hasMany(card)
+
+//TODO Tests
+
+// Export Models
+export default { user, deck, attack, card };
