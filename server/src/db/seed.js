@@ -57,6 +57,7 @@ async function seed () {
         const cardCount = randInt(2, 5)
         for (let i = 0; i < cardCount; i++) {
             const j = randInt(0, cards.length)
+            for (let j = 0; j < cards.length; j++) {}
             cardPromises.push(deck.createCard(cards[j]))
         }
     }

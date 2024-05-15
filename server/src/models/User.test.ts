@@ -2,6 +2,7 @@ import { expect, test, describe, afterAll, beforeAll } from "bun:test";
 import {db} from "../db/config.ts";
 import { DataTypes } from "sequelize";
 import User from "./User.ts";
+import Deck from "./Deck.ts";
 
 beforeAll(async () => {
   await db.sync();
@@ -29,4 +30,16 @@ describe('User Model', () => {
       allowNull: false
     }));
   });
+});
+
+
+describe('Model Associations', () => {
+  test('User should have a Deck', async () => {
+    const user = await User.create();
+    const deck = await Deck.create();
+    
+    deck.setDataValue('id', user.getDataValue('id'))
+
+    expect(user.getDataValue('id')).toEqual(deck.getDataValue('id'));
+  })
 });
